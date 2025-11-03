@@ -74,7 +74,7 @@ python test_CBLLM.py --cbl_path mpnet_acs/SetFit_sst2/roberta_cbm/cbl_acc.pt
 ```
 
 
-########### FORKED ORIGINAL BELOW ##############
+## === FORKED ORIGINAL BELOW  ===
 01/22 update: CB-LLMs is accepted by ICLR2025!
 
 This is the official repo for the paper: [**Concept Bottleneck Large Language Models**](https://arxiv.org/abs/2412.07992) [[project website](https://lilywenglab.github.io/CB-LLMs/)].
