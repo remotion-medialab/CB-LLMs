@@ -42,8 +42,8 @@ PY
 ## === 4. Download Fine-Tuned Model (Optional — to skip training) ===
 If you want to skip training and directly use the fine-tuned CB-LLM (MPNet-ACS) model:
 
-## === 4.1 Install Git LFS ===
 ```
+# Install Git LFS
 brew update
 brew install git-lfs
 git lfs install
@@ -51,10 +51,8 @@ git lfs install
 # If brew fails (rare), you can manually install:
 #   cd ~/Downloads/git-lfs-3.7.1
 #   sudo ./install.sh
-```
 
-## === 9.2 Download checkpoints ===
-```
+# Download checkpoints
 git clone https://huggingface.co/cesun/cbllm-classification temp_repo
 mv temp_repo/mpnet_acs .
 rm -rf temp_repo
