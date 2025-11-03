@@ -1,4 +1,131 @@
 # Concept Bottleneck Large Language Models
+
+
+attempt new:
+```
+# go to the repo root
+cd /path/to/CB-LLMs
+
+# create dedicated env for classification
+conda create -n cbllm-classif python=3.10 -y
+conda activate cbllm-classif
+
+# keep pip toolchain fresh
+python -m pip install -U pip wheel setuptools
+
+# go into the classification folder
+cd classification
+sed '/^torch==/d;/^torchvision==/d;/^torchaudio==/d' requirements.txt > requirements.notorch.txt
+python -m pip install -r requirements.notorch.txt
+python -m pip install "torch==2.2.2" "torchvision==0.17.2" "torchaudio==2.2.2"
+python -m pip uninstall -y numpy
+python -m pip install --no-user --force-reinstall "numpy==1.26.4"
+conda install numpy=1.26.4 -y
+
+If you want to skip training and use the fine-tuned CB-LLMs, this will download the fine-tuned MPNet-based model (mpnet_acs) into your current directory.
+We also provide finetuned CB-LLMs, allowing you to skip the training process. Download the checkpoints from huggingface:
+```
+# install git-lfs only
+sudo rm -rf /Library/Developer/CommandLineTools sudo xcode-select --install
+cd ~/Downloads/git-lfs-3.7.1
+sudo ./install.sh                    
+brew update
+brew install git-lfs
+git lfs install
+git clone https://huggingface.co/cesun/cbllm-classification temp_repo
+mv temp_repo/mpnet_acs .
+rm -rf temp_repo
+```
+############GPT CLEANED UP##########
+# === 1. Go to the repo root ===
+```
+cd /path/to/CB-LLMs
+```
+# === 2. Create dedicated environment ===
+```
+conda create -n cbllm-classif python=3.10 -y
+conda activate cbllm-classif
+```
+
+# === 3. Keep pip toolchain fresh ===
+```
+python -m pip install -U pip wheel setuptools
+```
+# === 4. Enter the classification folder ===
+```
+cd classification
+```
+# === 5. Remove torch-related lines from requirements and install dependencies ===
+```
+sed '/^torch==/d;/^torchvision==/d;/^torchaudio==/d' requirements.txt > requirements.notorch.txt
+python -m pip install -r requirements.notorch.txt
+```
+# === 6. Install PyTorch for macOS (MPS backend) ===
+```
+python -m pip install "torch==2.2.2" "torchvision==0.17.2" "torchaudio==2.2.2"
+```
+# === 7. Fix NumPy compatibility (torch 2.2 requires NumPy < 2) ===
+```
+conda remove numpy -y
+conda install numpy=1.26.4 -y
+# OR (if you prefer pip)
+# python -m pip uninstall -y numpy
+# python -m pip install --no-user --force-reinstall "numpy==1.26.4"
+```
+# === 8. Verify versions ===
+```
+python - <<'PY'
+import numpy, torch
+print("NumPy:", numpy.__version__)
+print("Torch:", torch.__version__)
+print("MPS available:", torch.backends.mps.is_available())
+PY
+```
+Download Fine-Tuned Model (Optional — to skip training)
+
+If you want to skip training and directly use the fine-tuned CB-LLM (MPNet-ACS) model:
+
+# === 9.1 Install Git LFS ===
+```
+brew update
+brew install git-lfs
+git lfs install
+
+# If brew fails (rare), you can manually install:
+#   cd ~/Downloads/git-lfs-3.7.1
+#   sudo ./install.sh
+```
+
+# === 9.2 Download checkpoints ===
+```
+git clone https://huggingface.co/cesun/cbllm-classification temp_repo
+mv temp_repo/mpnet_acs .
+rm -rf temp_repo
+```
+
+🧪 10. Run the classification pipeline
+# Generate concept scores (creates .npy files)
+```
+python get_concept_labels.py
+```
+# Train the Concept Bottleneck Layer (CBL)
+```
+python train_CBL.py --automatic_concept_correction
+```
+# Train the final linear layer
+```
+python train_FL.py --cbl_path mpnet_acs/SetFit_sst2/roberta_cbm/cbl_acc.pt
+```
+# Test CB-LLM
+```
+python test_CBLLM.py --cbl_path mpnet_acs/SetFit_sst2/roberta_cbm/cbl_acc.pt
+```
+
+
+
+
+
+########### FORKED ORIGINAL BELOW ##############
 01/22 update: CB-LLMs is accepted by ICLR2025!
 
 This is the official repo for the paper: [**Concept Bottleneck Large Language Models**](https://arxiv.org/abs/2412.07992) [[project website](https://lilywenglab.github.io/CB-LLMs/)].
