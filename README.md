@@ -193,6 +193,9 @@ cd generation
 Install the packages:
 ```
 pip install -r requirements.txt
+# pip install datasets
+conda install -c huggingface -c conda-forge datasets
+python -m pip install datasets
 ```
 We also provide finetuned CB-LLMs, allowing you to skip the training process. Download the checkpoints from huggingface:
 ```
@@ -200,6 +203,7 @@ git lfs install
 git clone https://huggingface.co/cesun/cbllm-generation temp_repo
 mv temp_repo/from_pretained_llama3_lora_cbm .
 rm -rf temp_repo
+
 ```
 ### Training
 #### Train CB-LLM (generation)
