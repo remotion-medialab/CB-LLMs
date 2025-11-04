@@ -196,6 +196,9 @@ pip install -r requirements.txt
 # pip install datasets
 conda install -c huggingface -c conda-forge datasets
 python -m pip install datasets
+python -m pip install -U transformers
+python -m pip install -U peft transformers accelerate
+
 ```
 We also provide finetuned CB-LLMs, allowing you to skip the training process. Download the checkpoints from huggingface:
 ```
